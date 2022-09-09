@@ -53,4 +53,17 @@ cmake-build*/
 *.dex
 *.apk
 
-local.properties
+*.iml
+.gradle
+/local.properties
+/.idea/libraries
+/.idea/caches
+.idea/caches/
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/dbnavigator.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx

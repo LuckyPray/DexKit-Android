@@ -30,7 +30,7 @@ DexKit应该是目前最快的反混淆工具。
 
 Gradle:
 
-`implementation: io.github.LuckyPray:DexKit:<version>`
+`implementation: io.github.LuckyPray:DexKit-Android:<version>`
 
 这个库使用了 [prefab](https://google.github.io/prefab/)，你需要在 gradle (Android Gradle Plugin 4.1+ 版本以上才支持)中开启此特性：
 
@@ -54,7 +54,7 @@ add_library(mylib SHARED main.cpp)
 
 # 添加如下两行，注意必须添加 libz，如果你有其他依赖可以放在后面
 find_package(dexkit REQUIRED CONFIG)
-target_link_libraries(app dexkit::dex_kit_static z)
+target_link_libraries(mylib dexkit::dex_kit_static z)
 ```
 
 ## 使用示例

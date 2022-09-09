@@ -22,7 +22,7 @@ android {
 
     externalNativeBuild {
         cmake {
-            path file('src/main/cpp/CMakeLists.txt')
+            path file('src/main/DexKit/CMakeLists.txt')
             version '3.18.1'
         }
     }
@@ -34,7 +34,7 @@ android {
 
     prefab {
         dex_kit_static {
-            headers "src/main/cpp/include"
+            headers "src/main/DexKit/include"
         }
     }
 }

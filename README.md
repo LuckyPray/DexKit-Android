@@ -24,7 +24,7 @@ And there are many other APIs:
 
 Gradle:
 
-`implementation: io.github.LuckyPray:DexKit:<version>`
+`implementation: io.github.LuckyPray:DexKit-Android:<version>`
 
 This library uses [prefab](https://google.github.io/prefab/), you should enable it in gradle (Android Gradle Plugin 4.1+):
 
@@ -47,7 +47,7 @@ add_library(mylib SHARED main.cpp)
 
 # Add two lines below
 find_package(dexkit REQUIRED CONFIG)
-target_link_libraries(app dexkit::dex_kit_static z)
+target_link_libraries(mylib dexkit::dex_kit_static z)
 ```
 
 ## Example
