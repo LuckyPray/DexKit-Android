@@ -1,7 +1,12 @@
-DexKit-Android
---
+<div align="center">
+    <h1> DexKit-Android </h1>
+
+[![license](https://img.shields.io/github/license/LuckyPray/DexKit-Android.svg)](https://www.gnu.org/licenses/lgpl-3.0.html)
+[![](https://jitpack.io/v/LuckyPray/DexKit-Android.svg)](https://jitpack.io/#LuckyPray/DexKit-Android)
 
 [README](https://github.com/LuckyPray/DexKit-Android/blob/master/README.md)|[中文文档](https://github.com/LuckyPray/DexKit-Android/blob/master/README_zh.md)
+
+</div>
 
 A high performance dex deobfuscator library(NDK).
 
