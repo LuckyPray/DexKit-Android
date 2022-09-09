@@ -1,9 +1,9 @@
-DexKit
+DexKit-Android
 --
 
 [README](https://github.com/LuckyPray/DexKit-Android/blob/master/README.md)|[中文文档](https://github.com/LuckyPray/DexKit-Android/blob/master/README_zh.md)
 
-一个高性能的 dex 反混淆工具。
+一个高性能的 dex 反混淆工具（NDK版本）。
 
 ## API说明
 

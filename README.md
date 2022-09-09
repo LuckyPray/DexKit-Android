@@ -1,9 +1,9 @@
- DexKit
+DexKit-Android
 --
 
 [README](https://github.com/LuckyPray/DexKit-Android/blob/master/README.md)|[中文文档](https://github.com/LuckyPray/DexKit-Android/blob/master/README_zh.md)
 
-A high performance dex deobfuscator library.
+A high performance dex deobfuscator library(NDK).
 
 ## API introduction
 
