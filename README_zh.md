@@ -55,6 +55,7 @@ find_package(dexkit REQUIRED CONFIG)
 target_link_libraries(mylib dexkit::dex_kit_static z)
 ```
 
+> 注意：此头文件从 `1.1.0` 开始加入
 同时，我们提供了 [DexKitJniHelper.h](https://github.com/LuckyPray/DexKit/blob/master/include/DexKitJniHelper.h)
 用于java与c++之间复杂对象的转换，例如：`HashMap<String, HashSet<String>>` -> `std::map<std::string, std::set<std::string>>`。
 
