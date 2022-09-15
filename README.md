@@ -56,6 +56,7 @@ target_link_libraries(mylib dexkit::dex_kit_static z)
 ```
 
 > Note: This header file was added since `1.1.0`
+
 At the same time, we also provide [DexKitJniHelper.h](https://github.com/LuckyPray/DexKit/blob/master/include/DexKitJniHelper.h) 
 for the conversion of complex objects between java and c++. For example: `HashMap<String, HashSet<String>>` -> `std::map<std::string, std::set<std::string>>`
 
