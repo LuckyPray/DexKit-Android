@@ -47,13 +47,78 @@ android {
 
 你可以直接在 `CMakeLists.txt` 中使用 `find_package` 来使用 DexKit:
 
-```
-# 假设你的 library 名字为 mylib
+```cmake
 add_library(mylib SHARED main.cpp)
 
 # 添加如下两行，注意必须添加 libz，如果你有其他依赖可以放在后面
 find_package(dexkit REQUIRED CONFIG)
 target_link_libraries(mylib dexkit::dex_kit_static z)
+```
+
+同时，我们提供了 [DexKitJniHelper.h](https://github.com/LuckyPray/DexKit/blob/master/include/DexKitJniHelper.h)
+用于java与c++之间复杂对象的转换，例如：`HashMap<String, HashSet<String>>` -> `std::map<std::string, std::set<std::string>>`。
+
+dexkit.cpp
+```c++
+#include<DexKitJniHelper.h>
+
+extern "C"
+JNIEXPORT jlong JNICALL
+Java_me_xxx_dexkit_DexKitHelper_initDexKit(JNIEnv *env, jobject thiz,
+                                           jstring apkPath) {
+    const char *cStr = env->GetStringUTFChars(apkPath, nullptr);
+    std::string filePathStr(cStr);
+    auto dexkit = new dexkit::DexKit(hostApkPath);
+    env->ReleaseStringUTFChars(apkPath, cStr);
+    return (jlong) dexkit;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_me_xxx_dexkit_DexKitHelper_release(JNIEnv *env, jobject thiz, jlong token) {
+    ReleaseDexKitInstance(env, token);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_me_xxx_dexkit_DexKitHelper_batchFindClassUsedString(JNIEnv *env,
+                                                         jobject thiz,
+                                                         jlong token,
+                                                         jobject map,
+                                                         jboolean advanced_match) {
+    // 该方法定义于 DexKitJniHelper.h
+    // 获取更多辅助方法请参阅源码：https://github.com/LuckyPray/DexKit/blob/master/include/DexKitJniHelper.h
+    return LocationClasses(env, token, map, advanced_match);
+}
+```
+
+DexKitHelper.kt
+```kotlin
+class DexKitHelper(
+    classLoader: ClassLoader
+) {
+    
+    private var token: Long = 0
+
+    init {
+        token = initDexKit(classLoader)
+    }
+
+    private external fun initDexKit(apkPath: String): Long
+
+    /**
+     * 释放c++分配的空间
+     */
+    private external fun release(token: Long)
+
+    private external fun batchFindClassUsedString(
+        token: Long,
+        map: Map<String, Set<String>>,
+        advancedMatch: Boolean = false,
+    ): Map<String, Array<String>>
+    
+    // 省略... omit...
+}
 ```
 
 ## 使用示例

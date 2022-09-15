@@ -50,7 +50,7 @@ afterEvaluate {
                 from components.release
 
                 // You can then customize attributes of the publication as shown below.
-                groupId = 'me.teble'
+                groupId = 'io.luckypray'
                 artifactId = 'dexkit'
                 version = '1.0'
             }
