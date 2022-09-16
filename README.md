@@ -60,6 +60,7 @@ target_link_libraries(mylib dexkit::dex_kit_static z)
 At the same time, we also provide [DexKitJniHelper.h](https://github.com/LuckyPray/DexKit/blob/master/include/DexKitJniHelper.h) 
 for the conversion of complex objects between java and c++. For example: `HashMap<String, HashSet<String>>` -> `std::map<std::string, std::set<std::string>>`
 
+dexkit.cpp
 ```c++
 #include<DexKitJniHelper.h>
 
@@ -91,18 +92,20 @@ Java_me_xxx_dexkit_DexKitHelper_batchFindClassUsedString(JNIEnv *env,
     // For more help methods, please check the source code: https://github.com/LuckyPray/DexKit/blob/master/include/DexKitJniHelper.h
     return LocationClasses(env, token, map, advanced_match);
 }
+
+// omit...
 ```
 
 DexKitHelper.kt
 ```kotlin
 class DexKitHelper(
-    classLoader: ClassLoader
+    apkPath: String
 ) {
     
     private var token: Long = 0
 
     init {
-        token = initDexKit(classLoader)
+        token = initDexKit(apkPath)
     }
 
     private external fun initDexKit(apkPath: String): Long
