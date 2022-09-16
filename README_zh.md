@@ -92,18 +92,20 @@ Java_me_xxx_dexkit_DexKitHelper_batchFindClassUsedString(JNIEnv *env,
     // 获取更多辅助方法请参阅源码：https://github.com/LuckyPray/DexKit/blob/master/include/DexKitJniHelper.h
     return LocationClasses(env, token, map, advanced_match);
 }
+
+// 省略...
 ```
 
 DexKitHelper.kt
 ```kotlin
 class DexKitHelper(
-    classLoader: ClassLoader
+    apkPath: String
 ) {
     
     private var token: Long = 0
 
     init {
-        token = initDexKit(classLoader)
+        token = initDexKit(apkPath)
     }
 
     private external fun initDexKit(apkPath: String): Long
@@ -119,7 +121,7 @@ class DexKitHelper(
         advancedMatch: Boolean = false,
     ): Map<String, Array<String>>
     
-    // 省略... omit...
+    // 省略...
 }
 ```
 
