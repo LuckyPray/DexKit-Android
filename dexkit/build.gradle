@@ -52,7 +52,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'io.luckypray'
                 artifactId = 'dexkit'
-                version = '1.0'
+                version = '1.2.0'
             }
         }
     }

@@ -10,20 +10,29 @@
 
 A high performance dex deobfuscator library(NDK).
 
+> **Warning**: The current project has been refactored, `1.1.0` and earlier APIs are deprecated. Please refer to the latest documentation for use.
+
 ## API introduction
 
 These two APIs can meet most of your usage scenarios:
 
-- **`DexKit::LocationClasses`**
-- **`DexKit::LocationMethods`**
+- **`DexKit::BatchFindClassesUsedStrings`**
+- **`DexKit::BatchFindMethodsUsedStrings`**
+
+> **Note**: In all cases you should avoid searching for keywords that contain duplicate content, eg: {"key_word", "word"}, as this will cause tags to be overwritten, resulting in inaccurate search results.
+> If there is such a need, open the advanced search mode as much as possible, and use the string to match the content exactly, for example, modify it to this: {"^key_word$", "^word$"}
 
 And there are many other APIs:
 
-- `DexKit::FindMethodInvoked`: Find caller for specified method.
-- `DexKit::FindMethodUsedString`
-- `DexKit::FindMethod`: Find method with various conditions
-- `DexKit::FindSubClasses`: Find sub class of specified class
-- `DexKit::FindMethodOpPrefixSeq`: Find method with op prefix
+- `DexKit::FindMethodBeInvoked`: find caller for specified method.
+- `DexKit::FindMethodInvoking`: find the called method
+- `DexKit::FindFieldBeUsed`: find method getting specified field, access types(put/get) can be limited by setting `be_used_flags`
+- `DexKit::FindMethodUsedString`: find method used utf8 string
+- `DexKit::FindMethod`: find method by multiple conditions
+- `DexKit::FindSubClasses`: find all direct subclasses of the specified class
+- `DexKit::FindMethodOpPrefixSeq`:  find all method used opcode prefix sequence
+
+For more detailed instructions, please refer to [dex_kit.h](https://github.com/LuckyPray/DexKit/blob/master/include/dex_kit.h).
 
 ## Integration
 
@@ -60,70 +69,9 @@ target_link_libraries(mylib dexkit::dex_kit_static z)
 At the same time, we also provide [DexKitJniHelper.h](https://github.com/LuckyPray/DexKit/blob/master/include/DexKitJniHelper.h) 
 for the conversion of complex objects between java and c++. For example: `HashMap<String, HashSet<String>>` -> `std::map<std::string, std::set<std::string>>`
 
-dexkit.cpp
-```c++
-#include<DexKitJniHelper.h>
-
-extern "C"
-JNIEXPORT jlong JNICALL
-Java_me_xxx_dexkit_DexKitHelper_initDexKit(JNIEnv *env, jobject thiz,
-                                           jstring apkPath) {
-    const char *cStr = env->GetStringUTFChars(apkPath, nullptr);
-    std::string filePathStr(cStr);
-    auto dexkit = new dexkit::DexKit(hostApkPath);
-    env->ReleaseStringUTFChars(apkPath, cStr);
-    return (jlong) dexkit;
-}
-
-extern "C"
-JNIEXPORT void JNICALL
-Java_me_xxx_dexkit_DexKitHelper_release(JNIEnv *env, jobject thiz, jlong token) {
-    ReleaseDexKitInstance(env, token);
-}
-
-extern "C"
-JNIEXPORT jobject JNICALL
-Java_me_xxx_dexkit_DexKitHelper_batchFindClassUsedString(JNIEnv *env,
-                                                         jobject thiz,
-                                                         jlong token,
-                                                         jobject map,
-                                                         jboolean advanced_match) {
-    // this function is declared in DexKitJniHelper.h
-    // For more help methods, please check the source code: https://github.com/LuckyPray/DexKit/blob/master/include/DexKitJniHelper.h
-    return LocationClasses(env, token, map, advanced_match);
-}
-
-// omit...
-```
-
-DexKitHelper.kt
-```kotlin
-class DexKitHelper(
-    apkPath: String
-) {
-    
-    private var token: Long = 0
-
-    init {
-        token = initDexKit(apkPath)
-    }
-
-    private external fun initDexKit(apkPath: String): Long
-
-    /**
-     * free space allocated by c++
-     */
-    private external fun release(token: Long)
-
-    private external fun batchFindClassUsedString(
-        token: Long,
-        map: Map<String, Set<String>>,
-        advancedMatch: Boolean = false,
-    ): Map<String, Array<String>>
-    
-    //  omit...
-}
-```
+JNI used example :
+- [dexkit.cpp](https://github.com/LuckyPray/XAutoDaily/blob/master/app/src/main/cpp/dexkit.cpp)
+- [DexKitHelper.kt](https://github.com/LuckyPray/XAutoDaily/blob/master/app/src/main/java/me/teble/xposed/autodaily/dexkit/DexKitHelper.kt)
 
 ## Example
 
