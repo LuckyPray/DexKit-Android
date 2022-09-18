@@ -38,7 +38,7 @@ For more detailed instructions, please refer to [dex_kit.h](https://github.com/L
 
 Gradle:
 
-`implementation: io.github.LuckyPray:DexKit-Android:<version>`
+`implementation: com.github.LuckyPray:DexKit-Android:<version>`
 
 This library uses [prefab](https://google.github.io/prefab/), you should enable it in gradle (Android Gradle Plugin 4.1+):
 
