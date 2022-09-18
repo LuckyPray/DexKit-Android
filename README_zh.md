@@ -38,7 +38,7 @@
 
 Gradle:
 
-`implementation: io.github.LuckyPray:DexKit-Android:<version>`
+`implementation: com.github.LuckyPray:DexKit-Android:<version>`
 
 这个库使用了 [prefab](https://google.github.io/prefab/)，你需要在 gradle (Android Gradle Plugin 4.1+ 版本以上才支持)中开启此特性：
 
