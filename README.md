@@ -50,6 +50,14 @@ android {
 }
 ```
 
+**Note**: DexKit-Android uses the [prefab package schema v2](https://github.com/google/prefab/releases/tag/v2.0.0), 
+which is configured by default since [Android Gradle Plugin 7.1.0](https://developer.android.com/studio/releases/gradle-plugin?buildsystem=cmake#7-1-0). 
+If you are using Android Gradle Plugin earlier than 7.1.0, please add the following configuration to `gradle.properties`:
+
+```
+android.prefabVersion=2.0.0
+```
+
 ## Usage
 
 ### CMake
