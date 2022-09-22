@@ -66,7 +66,7 @@ class DexKitHelper private constructor(dexpath: String): Closeable {
         advancedMatch: Boolean = true,
         dexPriority: IntArray? = intArrayOf(),
     ): Map<String, Array<String>> {
-        return batchFindClassesUsedStrings(token, toSet(map), advancedMatch, dexPriority)
+        return convertSignature(batchFindClassesUsedStrings(token, toSet(map), advancedMatch, dexPriority))
     }
 
     @JvmName("batchFindMethodsUsedStrings2")
@@ -82,6 +82,14 @@ class DexKitHelper private constructor(dexpath: String): Closeable {
         val result = mutableMapOf<String, Set<String>>()
         for (entry in map) {
             result[entry.key] = entry.value.toSet()
+        }
+        return result
+    }
+
+    fun convertSignature(map: Map<String, Array<String>>) : Map<String, Array<String>> {
+        val result = mutableMapOf<String, Array<String>>()
+        for (entry in map) {
+            result[entry.key] = entry.value.map { it.jniSignatureToJava() }.toTypedArray()
         }
         return result
     }
@@ -209,7 +217,7 @@ class DexKitHelper private constructor(dexpath: String): Closeable {
         parentClass: String,
         dexPriority: IntArray? = intArrayOf(),
     ): Array<String> {
-        return findSubClasses(token, parentClass, dexPriority)
+        return findSubClasses(token, parentClass, dexPriority).map { it.jniSignatureToJava() }.toTypedArray()
     }
 
     fun findMethodOpPrefixSeq(
@@ -329,5 +337,9 @@ class DexKitHelper private constructor(dexpath: String): Closeable {
 
     override fun close() {
         release()
+    }
+
+    fun String.jniSignatureToJava(): String {
+        return this.replace('/', '.').substring(1, this.length - 1)
     }
 }
