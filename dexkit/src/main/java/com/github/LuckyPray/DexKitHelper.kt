@@ -1,8 +1,8 @@
 package com.github.LuckyPray
 
-class DexKitHelper(
-    classLoader: ClassLoader
-) {
+import java.io.Closeable
+
+class DexKitHelper(classLoader: ClassLoader): Closeable {
     companion object {
         const val FLAG_GETTING = 1
         const val FLAG_SETTING = 2
@@ -278,4 +278,8 @@ class DexKitHelper(
         methodParamTypes: Array<String>?,
         dexPriority: IntArray?,
     ): Array<String>
+
+    override fun close() {
+        release()
+    }
 }
