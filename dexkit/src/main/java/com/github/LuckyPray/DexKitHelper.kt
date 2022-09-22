@@ -3,25 +3,27 @@ package com.github.LuckyPray
 import java.io.Closeable
 import java.net.URL
 
-class DexKitHelper(dexpath: String): Closeable {
+class DexKitHelper private constructor(dexpath: String): Closeable {
 
     companion object {
         const val FLAG_GETTING = 1
         const val FLAG_SETTING = 2
         const val FLAG_USING = FLAG_GETTING or FLAG_SETTING
 
-        fun create(dexpath: String) {
-            DexKitHelper(dexpath)
+        fun create(dexpath: String): DexKitHelper? {
+            val helper = DexKitHelper(dexpath)
+            return if (helper.valid()) helper else null
         }
 
-        fun create(loader: ClassLoader) {
+        fun create(loader: ClassLoader): DexKitHelper? {
             val url = loader.javaClass.getDeclaredMethod("findResource", String::class.java)
                 .invoke(loader, "AndroidManifest.xml")
             if (url is URL) {
                 url.path.substring(5, url.path.length - 26).let {
-                    DexKitHelper(it)
+                    return DexKitHelper(it)
                 }
             }
+            return null
         }
     }
 
@@ -38,6 +40,10 @@ class DexKitHelper(dexpath: String): Closeable {
         release(token)
     }
 
+    fun valid(): Boolean {
+        return token != 0L
+    }
+
     fun batchFindClassesUsedStrings(
         map: Map<String, Set<String>>,
         advancedMatch: Boolean = true,
@@ -52,6 +58,32 @@ class DexKitHelper(dexpath: String): Closeable {
         dexPriority: IntArray? = intArrayOf(),
     ): Map<String, Array<String>> {
         return batchFindMethodsUsedStrings(token, map, advancedMatch, dexPriority)
+    }
+
+    @JvmName("batchFindClassesUsedStrings2")
+    fun batchFindClassesUsedStrings(
+        map: Map<String, Array<String>>,
+        advancedMatch: Boolean = true,
+        dexPriority: IntArray? = intArrayOf(),
+    ): Map<String, Array<String>> {
+        return batchFindClassesUsedStrings(token, toSet(map), advancedMatch, dexPriority)
+    }
+
+    @JvmName("batchFindMethodsUsedStrings2")
+    fun batchFindMethodsUsedStrings(
+        map: Map<String, Array<String>>,
+        advancedMatch: Boolean = true,
+        dexPriority: IntArray? = intArrayOf(),
+    ): Map<String, Array<String>> {
+        return batchFindMethodsUsedStrings(token, toSet(map), advancedMatch, dexPriority)
+    }
+
+    fun toSet(map: Map<String, Array<String>>): Map<String, Set<String>> {
+        val result = mutableMapOf<String, Set<String>>()
+        for (entry in map) {
+            result[entry.key] = entry.value.toSet()
+        }
+        return result
     }
 
     fun findMethodBeInvoked(
