@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'maven-publish'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -22,7 +23,7 @@ android {
 
     externalNativeBuild {
         cmake {
-            path file('src/main/DexKit/CMakeLists.txt')
+            path file('src/main/CMakeLists.txt')
             version '3.18.1'
         }
     }
@@ -56,4 +57,8 @@ afterEvaluate {
             }
         }
     }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:+'
 }
