@@ -1,12 +1,28 @@
 package com.github.LuckyPray
 
 import java.io.Closeable
+import java.net.URL
 
-class DexKitHelper(classLoader: ClassLoader): Closeable {
+class DexKitHelper(dexpath: String): Closeable {
+
     companion object {
         const val FLAG_GETTING = 1
         const val FLAG_SETTING = 2
         const val FLAG_USING = FLAG_GETTING or FLAG_SETTING
+
+        fun create(dexpath: String) {
+            DexKitHelper(dexpath)
+        }
+
+        fun create(loader: ClassLoader) {
+            val url = loader.javaClass.getDeclaredMethod("findResource", String::class.java)
+                .invoke(loader, "AndroidManifest.xml")
+            if (url is URL) {
+                url.path.substring(5, url.path.length - 26).let {
+                    DexKitHelper(it)
+                }
+            }
+        }
     }
 
     /**
@@ -15,7 +31,7 @@ class DexKitHelper(classLoader: ClassLoader): Closeable {
     private var token: Long = 0
 
     init {
-        token = initDexKit(classLoader)
+        token = initDexKit(dexpath)
     }
 
     fun release() {
@@ -183,7 +199,7 @@ class DexKitHelper(classLoader: ClassLoader): Closeable {
         )
     }
 
-    private external fun initDexKit(classLoader: ClassLoader): Long
+    private external fun initDexKit(dexpath: String): Long
 
     private external fun release(token: Long)
 

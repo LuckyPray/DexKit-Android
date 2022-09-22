@@ -3,24 +3,14 @@
 
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_github_LuckyPray_DexKitHelper_initDexKit(JNIEnv *env, jobject thiz,
-                                                              jobject class_loader) {
-    if (!class_loader) {
+Java_com_github_LuckyPray_DexKitHelper_initDexKit(JNIEnv *env, jobject thiz, jstring dexpath) {
+    if (!dexpath) {
         return 0;
     }
-    jclass cClassloader = env->FindClass("java/lang/ClassLoader");
-    jmethodID mGetResource = env->GetMethodID(cClassloader, "findResource",
-                                              "(Ljava/lang/String;)Ljava/net/URL;");
-    jstring manifestPath = env->NewStringUTF("AndroidManifest.xml");
-    jobject url = env->CallObjectMethod(class_loader, mGetResource, manifestPath);
-    jclass cURL = env->FindClass("java/net/URL");
-    jmethodID mGetPath = env->GetMethodID(cURL, "getPath", "()Ljava/lang/String;");
-    auto file = (jstring) env->CallObjectMethod(url, mGetPath);
-    const char *cStr = env->GetStringUTFChars(file, nullptr);
-    std::string filePathStr(cStr);
-    std::string hostApkPath = filePathStr.substr(5, filePathStr.size() - 26);
-    auto dexkit = new dexkit::DexKit(hostApkPath);
-    env->ReleaseStringUTFChars(file, cStr);
+
+    auto cdexpath = env->GetStringUTFChars(dexpath, nullptr);
+    auto dexkit = new dexkit::DexKit(cdexpath);
+    env->ReleaseStringUTFChars(dexpath, cdexpath);
     return (jlong) dexkit;
 }
 
