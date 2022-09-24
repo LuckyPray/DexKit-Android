@@ -8,6 +8,8 @@
 
 </div>
 
+# 本仓库更新终止, 后续请使用 [DexKit](https://github.com/LuckyPray/DexKit), 它使用起来更便捷。
+
 一个高性能的 dex 反混淆工具（NDK版本）。
 
 > **Warning**: 当前项目已经进行重构，`1.1.0`及以下的API全被弃用，请参考最新的文档进行使用。
