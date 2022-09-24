@@ -8,6 +8,9 @@
 
 </div>
 
+# This repository update has been terminated, Please use [DexKit](https://github.com/LuckyPray/DexKit) in the future, it's easier to use.
+
+
 A high performance dex deobfuscator library(NDK).
 
 > **Warning**: The current project has been refactored, `1.1.0` and earlier APIs are deprecated. Please refer to the latest documentation for use.
